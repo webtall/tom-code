@@ -1,0 +1,73 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<html xml:lang="zn" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>浮动层居中的对话框效果演示</title>
+<fck:meta http-equiv="content-type" content="application/xhtml+xml; charset=gb2312"/>
+<style type="text/css">
+div.neat-dialog-bg,div.neat-dialog-cont{left:0;width:100%;position:absolute;top:0;height:100%}
+body,html{height:100%}
+body{font-size:14px;font-family:tahoma,verdana,sans-serif}
+div.neat-dialog-cont{z-index:98;background:none transparent scroll repeat 0 0}
+div.neat-dialog-bg{z-index:-1;filter:alpha(opacity=70);background-color:#eee;opacity:.7}
+div.neat-dialog{border-right:#555 1px solid;border-top:#555 1px solid;z-index:99;margin-left:auto;border-left:#555 1px solid;width:30%;margin-right:auto;border-bottom:#555 1px solid;position:relative;top:25%;background-color:#fff}
+div.neat-dialog-title{padding-right:.3em;padding-left:.3em;font-size:.8em;padding-bottom:.1em;margin:0;line-height:1.2em;padding-top:.1em;border-bottom:#444 1px solid;position:relative}
+img.nd-cancel{right:.2em;position:absolute;top:.2em}
+div.neat-dialog p{padding-right:.2em;padding-left:.2em;padding-bottom:.2em;padding-top:.2em;text-align:center}
+</style>
+<script type="text/javascript"> 
+function NeatDialog(sHTML, sTitle, bCancel) {
+	// window.neatDialog = null;
+	this.elt = null;
+
+	if (document.createElement && document.getElementById) {
+		var dg = document.createElement("div");
+		dg.className = "neat-dialog";
+		if (sTitle) sHTML = '<div class="neat-dialog-title">' + sTitle + ((bCancel) ? '<img src="x.gif" alt="Cancel" id="nd-cancel" />' : '') + '</div>\n' + sHTML;
+		dg.innerHTML = sHTML;
+		var dbg = document.createElement("div");
+		dbg.id = "nd-bdg";
+		dbg.className = "neat-dialog-bg";
+		var dgc = document.createElement("div");
+		dgc.className = "neat-dialog-cont";
+		dgc.appendChild(dbg);
+		dgc.appendChild(dg);
+		//adjust positioning if body has a margin 
+		if (document.body.offsetLeft > 0) dgc.style.marginLeft = document.body.offsetLeft + "px";
+		document.body.appendChild(dgc);
+		if (bCancel) document.getElementById("nd-cancel").onclick = function() {
+			this.NeatDialog.close();
+		};
+		this.elt = dgc;
+		// this.neatDialog = this;
+	}
+}
+NeatDialog.prototype.close = function() {
+
+	if (this.elt) {
+		this.elt.style.display = "none";
+		this.elt.parentNode.removeChild(this.elt);
+	}
+	// this.neatDialog = null;
+}
+
+function openDialog() {
+	var sHTML = '<p>你现在看到的是一个层窗口，是被JS控制弹出的，<a href="http://www.jb51.net">www.jb51.net</a>脚本之家！</p>' + '<p><button onclick="t.NeatDialog.close()">关闭</button></p>';
+	var t = new NeatDialog(sHTML, "欢迎光临!", true);
+	
+}
+function openDialog3() {
+	alert(7)
+	var sHTML = '<p onclick="openDialog4()">KKKK</p>' + '<p><button onclick="window.neatDialog.close()">关闭</button></p>';
+	new NeatDialog(sHTML, "欢迎光临!", false);
+}
+function openDialog4() {
+	var sHTML = '<p onclick="">hello</p>' + '<p><button onclick="window.neatDialog.close()">关闭</button></p>';
+	new NeatDialog(sHTML, "kkk!", false);
+}
+</script>
+<body>
+<h1>浮动层居中的效果</h1>
+<button onclick="openDialog()">点此演示效果</button>
+<button onclick="openDialog3()">点此演示效果</button>
+</body>
+</html>
